@@ -1,0 +1,49 @@
+{
+
+        "peers": [
+            {
+                "id": "peer_1",
+                "ip": "127.0.0.1",
+                "admin_listen": "50050",
+                "endorsor_listen": "50051",
+                "chaincode_listen": "50100"
+            },
+            {
+                "id": "peer_2",
+                "ip": "127.0.0.1",
+                "admin_listen": "50050",
+                "endorsor_listen": "50051",
+                "chaincode_listen": "50100"
+            },
+            {
+                "id": "peer_3",
+                "ip": "127.0.0.1",
+                "admin_listen": "50050",
+                "endorsor_listen": "50051",
+                "chaincode_listen": "50100"
+            },
+            {
+                "id": "peer_4",
+                "ip": "127.0.0.1",
+                "admin_listen": "50050",
+                "endorsor_listen": "50051",
+                "chaincode_listen": "50100"
+            },
+            {
+                "id": "peer_5",
+                "ip": "127.0.0.1",
+                "admin_listen": "50050",
+                "endorsor_listen": "50051",
+                "chaincode_listen": "50100"
+            }
+        ],
+        "orderers": [
+            {
+                "id": "orderer_1",
+                "ip": "127.0.0.1",
+                "listen": "30050"
+            }
+        ]
+
+}
+
