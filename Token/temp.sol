@@ -178,18 +178,15 @@ contract TokenERC20 {
 /*       ADVANCED TOKEN STARTS HERE       */
 /******************************************/
 
-contract bincoin is owned, TokenERC20 {
+contract MediumToken is owned, TokenERC20 {
 
-    uint256 public sellPrice;
-    uint256 public buyPrice;
+    uint256 public sellPrice = 1;
+    uint256 public buyPrice = 1;
 
-    //mapping (address => bool) public frozenAccount;
-	mapping (address => uint256) public lockAccount;
+    mapping (address => bool) public frozenAccount;
 
     /* This generates a public event on the blockchain that will notify clients */
     event FrozenFunds(address target, bool frozen);
-	
-	event LockFunds(address target, uint256 time);
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     constructor(
@@ -200,8 +197,6 @@ contract bincoin is owned, TokenERC20 {
 
     /* Internal transfer, only can be called by this contract */
     function _transfer(address _from, address _to, uint _value) internal {
-        //require (!frozenAccount[msg.sender]);
-		require (now - lockAccount[msg.sender] >= 1 minutes) 
         require (_to != address(0x0));                          // Prevent transfer to 0x0 address. Use burn() instead
         require (balanceOf[_from] >= _value);                   // Check if the sender has enough
         require (balanceOf[_to] + _value >= balanceOf[_to]);    // Check for overflows
@@ -229,10 +224,6 @@ contract bincoin is owned, TokenERC20 {
         frozenAccount[target] = freeze;
         emit FrozenFunds(target, freeze);
     }
-	
-	function lockOnAccount(address target) onlyOwner public {
-		lockAccount[target] = now;
-	}
 
     /// @notice Allow users to buy tokens for `newBuyPrice` eth and sell tokens for `newSellPrice` eth
     /// @param newSellPrice Price the users can sell to the contract
@@ -255,6 +246,12 @@ contract bincoin is owned, TokenERC20 {
         require(myAddress.balance >= amount * sellPrice);   // checks if the contract has enough ether to buy
         _transfer(msg.sender, address(this), amount);       // makes the transfers
         msg.sender.transfer(amount * sellPrice);            // sends ether to the seller. It's important to do this last to avoid recursion attacks
+    }
+    
+    function withdraw(uint256 amount) onlyOwner public{
+        require(address(this).balance >= amount);
+        address payable _to = address(uint160(owner));
+        _to.transfer(amount);
     }
 }
 
